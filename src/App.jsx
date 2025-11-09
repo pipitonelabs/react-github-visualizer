@@ -53,11 +53,23 @@ function App() {
         // Get contributors for the most starred repo
         if (repoData.length > 0) {
           const mainRepo = repoData.reduce((max, repo) => repo.stargazers_count > max.stargazers_count ? repo : max);
+          console.log('Most starred repo:', mainRepo.name, 'Stars:', mainRepo.stargazers_count);
           try {
             const contribData = await getRepoContributors(username, mainRepo.name, '');
+            console.log('Contributors API response:', contribData);
             setTopContributors(contribData.slice(0, 5)); // Top 5
           } catch (err) {
             console.error('Error fetching contributors:', err);
+          }
+        } else {
+          // Fallback: try to get contributors for the first repo if no repos found
+          console.log('No repos found, trying fallback for josephpipitone/josephpipitone');
+          try {
+            const contribData = await getRepoContributors('josephpipitone', 'josephpipitone', '');
+            console.log('Fallback contributors API response:', contribData);
+            setTopContributors(contribData.slice(0, 5));
+          } catch (err) {
+            console.error('Error fetching fallback contributors:', err);
           }
         }
       } catch (error) {

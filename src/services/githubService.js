@@ -31,7 +31,7 @@ export const getRepo = async (owner, repo, token) => {
 
 export const getRepoContributors = async (owner, repo, token, perPage = 100) => {
   const config = {
-    params: { per_page: perPage },
+    params: { per_page: perPage, anon: 'true' },
   };
   if (token) {
     config.headers = { Authorization: `token ${token}` };
