@@ -173,7 +173,16 @@ function App() {
               {repos.map((repo) => (
                 <div key={repo.id} className={cn("p-6 rounded-lg shadow", darkMode ? "bg-gray-800" : "bg-white")}>
                   <div className="flex justify-between items-start mb-2">
-                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{repo.name}</h3>
+                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                      <a
+                        href={`https://github.com/${username}/${repo.name}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:underline"
+                      >
+                        {repo.name}
+                      </a>
+                    </h3>
                     <div className="flex space-x-2">
                       <span className="flex items-center text-sm text-yellow-600 dark:text-yellow-400">
                         <Star className="h-4 w-4 mr-1" /> {repo.stargazers_count}
@@ -254,7 +263,14 @@ function App() {
               <ul className="space-y-2">
                 {events.map((event, index) => (
                   <li key={index} className="text-sm text-gray-600 dark:text-gray-300">
-                    {event.type}: {event.repo.name} - {new Date(event.created_at).toLocaleDateString()}
+                    {event.type}: <a
+                      href={`https://github.com/${username}/${event.repo.name}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-500 hover:underline"
+                    >
+                      {event.repo.name}
+                    </a> - {new Date(event.created_at).toLocaleDateString()}
                   </li>
                 ))}
               </ul>
