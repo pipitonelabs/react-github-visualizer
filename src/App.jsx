@@ -50,28 +50,35 @@ function App() {
         }
         setAggregatedLanguages(languages);
 
-        // Get contributors for the most starred repo
-        if (repoData.length > 0) {
-          const mainRepo = repoData.reduce((max, repo) => repo.stargazers_count > max.stargazers_count ? repo : max);
-          console.log('Most starred repo:', mainRepo.name, 'Stars:', mainRepo.stargazers_count);
+        // Get total contributions for each repo (sum of all contributors' contributions per repo)
+        const repoContributions = [];
+        for (const repo of repoData.slice(0, 10)) { // Limit to first 10 repos to avoid rate limits
           try {
-            const contribData = await getRepoContributors(username, mainRepo.name, '');
-            console.log('Contributors API response:', contribData);
-            setTopContributors(contribData.slice(0, 5)); // Top 5
+            const contribData = await getRepoContributors(username, repo.name, '');
+            const totalContributions = contribData.reduce((sum, contrib) => sum + contrib.contributions, 0);
+            repoContributions.push({
+              name: repo.name,
+              contributions: totalContributions,
+              full_name: repo.full_name
+            });
           } catch (err) {
-            console.error('Error fetching contributors:', err);
-          }
-        } else {
-          // Fallback: try to get contributors for the first repo if no repos found
-          console.log('No repos found, trying fallback for josephpipitone/josephpipitone');
-          try {
-            const contribData = await getRepoContributors('josephpipitone', 'josephpipitone', '');
-            console.log('Fallback contributors API response:', contribData);
-            setTopContributors(contribData.slice(0, 5));
-          } catch (err) {
-            console.error('Error fetching fallback contributors:', err);
+            console.error(`Error fetching contributors for ${repo.name}:`, err);
+            // Add repo with 0 contributions if we can't fetch
+            repoContributions.push({
+              name: repo.name,
+              contributions: 0,
+              full_name: repo.full_name
+            });
           }
         }
+
+        // Sort repos by total contributions and take top 5
+        const topReposByContributions = repoContributions
+          .sort((a, b) => b.contributions - a.contributions)
+          .slice(0, 5);
+
+        console.log('Top repos by contributions:', topReposByContributions);
+        setTopContributors(topReposByContributions);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -103,9 +110,9 @@ function App() {
     .sort((a, b) => b.value - a.value)
     .slice(0, 5);
 
-  const contributorData = topContributors.map(contrib => ({
-    name: contrib.login,
-    contributions: contrib.contributions
+  const contributorData = topContributors.map(repo => ({
+    name: repo.name,
+    contributions: repo.contributions
   }));
 
   if (loading) {
@@ -246,10 +253,10 @@ function App() {
               )}
             </div>
 
-            {/* Top Contributors */}
+            {/* Top Repositories by Contributions */}
             <div className={cn("p-6 rounded-lg shadow", darkMode ? "bg-gray-800" : "bg-white")}>
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
-                <Users className="h-5 w-5 mr-2" /> Top Contributors
+                <Code className="h-5 w-5 mr-2" /> Top Repositories by Contributions
               </h3>
               {topContributors.length > 0 ? (
                 <ResponsiveContainer width="100%" height={200}>
