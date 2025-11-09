@@ -1,17 +1,51 @@
-# React + Vite
+# GitHub Visualizer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple React-based tool for visualizing GitHub repository data, including stats, languages, contributors, and recent activity.
 
-Currently, two official plugins are available:
+**Live Demo**: [https://react-github-visualizer.vercel.app/](https://react-github-visualizer.vercel.app/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## React Compiler
+- **Overview Stats**: Displays total stars, forks, and watchers across all repositories
+- **Repository List**: Shows all public repositories with key details
+- **Language Breakdown**: Pie chart showing programming languages used
+- **Top Contributors**: Bar chart of top contributors for the most starred repository
+- **Recent Activity**: List of recent GitHub events
+- **Dark Mode**: Toggle between light and dark themes
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Technologies Used
 
-## Expanding the ESLint configuration
+- React 19
+- Vite
+- Tailwind CSS
+- Recharts
+- Axios
+- Lucide React
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-# react-github-visualizer
+## Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/react-github-visualizer.git
+   cd react-github-visualizer
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+4. Open your browser to `http://localhost:5173`
+
+## Usage
+
+The app automatically fetches and displays data for the configured GitHub user. No additional setup required for basic usage.
+
+## Configuration
+
+To visualize data for a different GitHub user, update the `username` variable in `src/App.jsx`.
