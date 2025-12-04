@@ -23,7 +23,7 @@ function App() {
   const [darkMode, setDarkMode] = useState(false);
   const [aggregatedLanguages, setAggregatedLanguages] = useState({});
   const [topContributors, setTopContributors] = useState([]);
-  const username = 'josephpipitone';
+  const username = 'pipitonelabs';
 
   useEffect(() => {
     const fetchData = async () => {
